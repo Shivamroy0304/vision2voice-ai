@@ -115,8 +115,7 @@ def main() -> None:
         bytes_data: Any = uploaded_file.getvalue()
         with open(uploaded_file.name, "wb") as file:
             file.write(bytes_data)
-        st.image(uploaded_file, caption="Uploaded Image",
-                 use_column_width=True)
+        st.image(uploaded_file, caption="Uploaded Image", width=600)
         progress_bar(100)
         scenario: str = generate_text_from_image(uploaded_file.name)
         story: str = generate_story_from_text(scenario)
