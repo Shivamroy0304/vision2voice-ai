@@ -104,7 +104,6 @@ def main() -> None:
     st.markdown(css_code, unsafe_allow_html=True)
 
     with st.sidebar:
-        st.image("img/gkj.jpg")
         st.write("---")
         st.write("AI App created by @Shivam Roy")
 
