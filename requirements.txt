@@ -1,6 +1,6 @@
 transformers
 torch
-langchain
+langchain==0.0.352
 openai
 python-dotenv
 requests
