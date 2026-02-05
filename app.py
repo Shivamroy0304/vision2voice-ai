@@ -9,6 +9,10 @@ from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from transformers import pipeline
+from transformers import BlipProcessor, BlipForConditionalGeneration
+from PIL import Image
+import torch
+import streamlit as st
 
 from utils.custom import css_code
 
@@ -34,6 +38,29 @@ def progress_bar(amount_of_time: int) -> Any:
     my_bar.empty()
 
 
+@st.cache_resource
+def load_blip():
+    processor = BlipProcessor.from_pretrained(
+        "Salesforce/blip-image-captioning-base"
+    )
+    model = BlipForConditionalGeneration.from_pretrained(
+        "Salesforce/blip-image-captioning-base"
+    )
+    return processor, model
+
+
+def generate_text_from_image(uploaded_file) -> str:
+    processor, model = load_blip()
+
+    image = Image.open(uploaded_file).convert("RGB")
+    inputs = processor(image, return_tensors="pt")
+
+    output = model.generate(**inputs)
+    caption = processor.decode(output[0], skip_special_tokens=True)
+
+    return caption
+
+"""
 def generate_text_from_image(url: str) -> str:
     """
     A function that uses the blip model to generate text from an image.
@@ -47,7 +74,7 @@ def generate_text_from_image(url: str) -> str:
     print(f"IMAGE INPUT: {url}")
     print(f"GENERATED TEXT OUTPUT: {generated_text}")
     return generated_text
-
+""
 
 def generate_story_from_text(scenario: str) -> str:
     """
