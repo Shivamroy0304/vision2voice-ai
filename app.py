@@ -7,8 +7,10 @@ import requests
 import streamlit as st
 from dotenv import find_dotenv, load_dotenv
 from langchain.chains import LLMChain
-##from langchain.chat_models import ChatOpenAI
-from langchain.chat_models import ChatOpenAI
+try:
+    from langchain_openai import ChatOpenAI
+except ImportError:  # Fallback for older LangChain versions
+    from langchain.chat_models import ChatOpenAI
 
 from langchain.prompts import PromptTemplate
 from transformers import pipeline
@@ -19,8 +21,13 @@ from transformers import pipeline
 from utils.custom import css_code
 
 load_dotenv(find_dotenv())
-HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# Prefer Streamlit Cloud secrets when available, fall back to env vars for local runs.
+HUGGINGFACE_API_TOKEN = st.secrets.get("HUGGINGFACE_API_TOKEN", os.getenv("HUGGINGFACE_API_TOKEN"))
+OPENAI_API_KEY = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY"))
+
+if OPENAI_API_KEY:
+    os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 
 def progress_bar(amount_of_time: int) -> Any:

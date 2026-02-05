@@ -112,16 +112,33 @@ This app uses a 3-step AI pipeline:
 
 Main libraries (see `requirements.txt`):
 
-- `os`
-- `python-dotenv`
-- `transformers`
-- `torch`
-- `langchain`
-- `openai`
-- `requests`
-- `streamlit`
 
 Install them all with:
 
 ```bash
 pip install -r requirements.txt
+
+
+## 🔐 Environment Variables
+
+This app requires API keys for OpenAI and Hugging Face.
+
+It supports both legacy and new LangChain OpenAI imports. Ensure dependencies are installed from `requirements.txt`.
+
+### Local development
+
+Create a `.env` file (or copy from `.env.example`) and set:
+
+```bash
+OPENAI_API_KEY=your_openai_key
+HUGGINGFACE_API_TOKEN=your_hf_token
+```
+
+### Streamlit Cloud
+
+In your Streamlit Cloud app settings, add the following secrets:
+
+```
+OPENAI_API_KEY = "your_openai_key"
+HUGGINGFACE_API_TOKEN = "your_hf_token"
+```
