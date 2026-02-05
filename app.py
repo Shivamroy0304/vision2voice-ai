@@ -79,7 +79,7 @@ def generate_story_from_text(scenario: str) -> str:
     llm = ChatOpenAI(
         model_name="gpt-3.5-turbo",
         temperature=0.9,
-        openai_api_key=OPENAI_API_KEY
+        
     )
 
     chain = LLMChain(llm=llm, prompt=prompt)
