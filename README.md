@@ -118,6 +118,8 @@ Install them all with:
 ```bash
 pip install -r requirements.txt
 
+```
+
 
 ## 🔐 Environment Variables
 

@@ -7,10 +7,7 @@ import requests
 import streamlit as st
 from dotenv import find_dotenv, load_dotenv
 from langchain.chains import LLMChain
-try:
-    from langchain_openai import ChatOpenAI
-except ImportError:  # Fallback for older LangChain versions
-    from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 
 from langchain.prompts import PromptTemplate
 from transformers import pipeline
