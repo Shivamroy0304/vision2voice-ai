@@ -4,10 +4,10 @@ from typing import Any
 
 import requests
 import streamlit as st
-from dotenv import find_dotenv, load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from langchain.chains import LLMChain
-from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
+from langchain_openai import ChatOpenAI
 from transformers import BlipProcessor, BlipForConditionalGeneration
 from PIL import Image
 
@@ -15,6 +15,7 @@ from utils.custom import css_code
 
 # ================= ENV =================
 load_dotenv(find_dotenv())
+
 HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
@@ -43,9 +44,6 @@ def load_blip():
 
 
 def generate_text_from_image(uploaded_file) -> str:
-    """
-    Uses BLIP to generate a caption from an uploaded image
-    """
     processor, model = load_blip()
 
     image = Image.open(uploaded_file).convert("RGB")
@@ -58,9 +56,6 @@ def generate_text_from_image(uploaded_file) -> str:
 
 # ================= STORY GENERATION =================
 def generate_story_from_text(scenario: str) -> str:
-    """
-    Uses GPT-3.5 + LangChain to generate a short story
-    """
     prompt_template = """
     You are a talented storyteller.
     Create a short story (max 50 words) based on the image description below.
@@ -78,8 +73,7 @@ def generate_story_from_text(scenario: str) -> str:
 
     llm = ChatOpenAI(
         model="gpt-3.5-turbo",
-        temperature=0.9,
-        
+        temperature=0.9
     )
 
     chain = LLMChain(llm=llm, prompt=prompt)
@@ -87,13 +81,12 @@ def generate_story_from_text(scenario: str) -> str:
 
 # ================= TEXT TO SPEECH =================
 def generate_speech_from_text(message: str) -> None:
-    """
-    Uses ESPnet VITS TTS from Hugging Face Inference API
-    """
     API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
+
     headers = {
         "Authorization": f"Bearer {HUGGINGFACE_API_TOKEN}"
     }
+
     payload = {"inputs": message}
 
     response = requests.post(API_URL, headers=headers, json=payload)
