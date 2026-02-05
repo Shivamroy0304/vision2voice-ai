@@ -40,7 +40,7 @@ def generate_text_from_image(url: str) -> str:
     :param url: image location
     :return: text: generated text from the image
     """
-    image_to_text: Any = pipeline("image-to-text", model="Salesforce/blip-image-captioning-base")
+    image_to_text: Any = pipeline("image-captioning", model="Salesforce/blip-image-captioning-base")
 
     generated_text: str = image_to_text(url)[0]["generated_text"]
 
