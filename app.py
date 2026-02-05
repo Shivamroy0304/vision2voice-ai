@@ -50,6 +50,11 @@ def load_blip():
 
 
 def generate_text_from_image(uploaded_file) -> str:
+    """
+    A function that uses the BLIP model to generate text from an image.
+    :param uploaded_file: Streamlit uploaded image file
+    :return: generated caption text
+    """
     processor, model = load_blip()
 
     image = Image.open(uploaded_file).convert("RGB")
